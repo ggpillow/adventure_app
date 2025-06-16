@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_background"
+    android:fitsSystemWindows="true"
+    android:paddingTop="?attr/actionBarSize"
+    tools:context=".ui.main.MainActivity">
+
+    <!-- СТАРТ -->
+    <TextView
+        android:id="@+id/button_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginTop="260dp"
+        android:gravity="center"
+        android:text="@string/button_start"
+        android:textColor="@drawable/selector_button_text"
+        android:textSize="42sp"
+        android:fontFamily="@font/panton_rust_heavy_grsh"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <!-- НАСТРОЙКИ -->
+    <TextView
+        android:id="@+id/button_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_start"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:gravity="center"
+        android:text="@string/button_settings"
+        android:textColor="@drawable/selector_button_text"
+        android:textSize="42sp"
+        android:fontFamily="@font/panton_rust_heavy_grsh"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <!-- ВЫХОД -->
+    <TextView
+        android:id="@+id/button_exit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_settings"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:gravity="center"
+        android:text="@string/button_exit"
+        android:textColor="@drawable/selector_button_text"
+        android:textSize="42sp"
+        android:fontFamily="@font/panton_rust_heavy_grsh"
+        android:clickable="true"
+        android:focusable="true" />
+</RelativeLayout>

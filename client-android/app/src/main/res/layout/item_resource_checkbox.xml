@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:layout_marginBottom="12dp"
+    android:paddingHorizontal="8dp"
+    android:fitsSystemWindows="true"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <TextView
+        android:id="@+id/resourceName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:minHeight="48dp"
+        android:gravity="center_vertical"
+        android:text="ресурс"
+        android:textSize="20sp"
+        android:fontFamily="@font/panton_rust_scr_sm_bold_gr"
+        android:background="@drawable/button_back_bg"
+        android:padding="12dp"
+        android:textColor="@color/black"
+        android:layout_marginEnd="8dp" />
+
+    <CheckBox
+        android:id="@+id/resourceCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/black" />
+</LinearLayout>

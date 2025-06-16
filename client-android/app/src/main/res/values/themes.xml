@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- === THEMES === -->
+    <!-- Основная тема приложения (Material3) -->
+    <style name="Theme.AdventureApp" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <!-- Цвета приложения -->
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorSecondary">@color/snow_blue</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="android:textColorPrimary">@color/white</item>
+
+        <!-- Стили для компонентов
+        <item name="android:buttonStyle">@style/CustomButtonStyle</item>
+        <item name="buttonStyle">@style/CustomButtonStyle</item>-->
+
+        <!-- Общая форма компонентов -->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.MyRounded</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.MyRounded</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.MyRounded</item>
+
+    </style>
+
+    <!-- Общая форма с закруглениями -->
+    <style name="ShapeAppearance.MyRounded" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+</resources>

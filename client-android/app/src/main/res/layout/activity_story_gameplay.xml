@@ -1,0 +1,100 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gameplay_background"
+    android:padding="24dp"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="false">
+
+    <!-- Кнопка "Памятка" в правом верхнем углу -->
+    <Button
+        android:id="@+id/buttonMemo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/button_back_bg"
+        android:text="памятка"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/panton_rust_scr_sm_bold_gr"
+        android:alpha="0.9" />
+
+    <!-- Контейнер по центру с внутренним отступом -->
+    <LinearLayout
+        android:id="@+id/centerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp">
+
+        <!-- Поле ввода + кнопка OK -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/button_back_bg"
+            android:padding="8dp"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="32dp">
+
+            <EditText
+                android:id="@+id/paragraphInput"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="Введи номер абзаца"
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:fontFamily="@font/panton_rust_scr_sm_bold_gr"
+                android:textSize="16sp"
+                android:inputType="number" />
+
+            <Button
+                android:id="@+id/buttonOk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_back_bg"
+                android:text="ok"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:fontFamily="@font/panton_rust_scr_sm_bold_gr"
+                android:layout_marginStart="12dp" />
+        </LinearLayout>
+
+        <!-- Кнопка "Создать предмет" -->
+        <Button
+            android:id="@+id/buttonCreateItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/button_back_bg"
+            android:text="создать предмет"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/panton_rust_scr_sm_bold_gr"
+            android:alpha="0.9" />
+
+        <!-- Кнопка "Конец истории" -->
+        <Button
+            android:id="@+id/buttonEndAdventure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/button_back_bg_red"
+            android:text="конец приключения"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/panton_rust_scr_sm_bold_gr"
+            android:alpha="0.9" />
+    </LinearLayout>
+</RelativeLayout>

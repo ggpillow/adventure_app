@@ -1,0 +1,48 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/epigraphs_background">
+
+    <!-- Фоновое изображение -->
+    <ImageView
+        android:id="@+id/epigraph_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/epigraph_background" />
+
+    <!-- Контейнер для эпиграфа и автора -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="160dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:gravity="end">
+
+        <!-- Эпиграф -->
+        <TextView
+            android:id="@+id/epigraph_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:textSize="24sp"
+            android:gravity="end"
+            android:fontFamily="@font/tempogrunge" />
+
+        <!-- Автор эпиграфа -->
+        <TextView
+            android:id="@+id/epigraph_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/gray"
+            android:textSize="18sp"
+            android:fontFamily="@font/tempogrunge"
+            android:gravity="end" />
+    </LinearLayout>
+
+</FrameLayout>

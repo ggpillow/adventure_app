@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gameplay_background"
+    android:fitsSystemWindows="true"
+    tools:context=".ui.scenario.PreparationActivity">
+
+    <!-- Прокручиваемая часть -->
+    <ScrollView
+        android:id="@+id/scrollContent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/startButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="72dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:paddingTop="?attr/actionBarSize">
+
+            <!-- Заголовок -->
+            <TextView
+                android:id="@+id/titleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Готовимся к приключению"
+                android:textSize="30dp"
+                android:textColor="@android:color/black"
+                android:fontFamily="@font/tempogrunge"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"/>
+
+            <!-- Абзац текста1 -->
+            <TextView
+                android:id="@+id/preparationDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Соберите игровое поле согласно схеме выбранного приключения.\n\nПеремешайте и выложите жетоны исследований, привалов, выхода так, как указано.\n\nПоместите на стартовый тайл фигурку группы выживших. Отсюда и начнётся ваше приключение."
+                android:textSize="20sp"
+                android:textColor="@android:color/black"
+                android:fontFamily="@font/tempogrunge"
+                android:layout_marginTop="24dp"/>
+
+            <ImageView
+                android:id="@+id/fieldImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:layout_marginTop="16dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Перемешайте и положите на стол четыре стопки тайлов, разделённых по цветам."
+                android:textSize="20sp"
+                android:textColor="@android:color/black"
+                android:fontFamily="@font/tempogrunge"
+                android:layout_marginTop="24dp"/>
+
+            <ImageView
+                android:id="@+id/tilesImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:layout_marginTop="16dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Перемешайте и выложите в центр стола колоды ресурсов, ценностей, событий и врагов лицевой стороной вниз. Колоду врагов разделите на две части по символу, указанному в верхнем правом углу карты врага. Колоду предметов перемешайте и положите в открытую."
+                android:textSize="20sp"
+                android:textColor="@android:color/black"
+                android:fontFamily="@font/tempogrunge"
+                android:layout_marginTop="24dp"/>
+
+            <ImageView
+                android:id="@+id/cardsImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:layout_marginTop="16dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Фиксированная кнопка "назад" в левом нижнем углу -->
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="назад"
+        android:textSize="25sp"
+        android:fontFamily="@font/panton_rust_scr_sm_bold_gr"
+        android:textColor="@color/black"
+        android:background="@drawable/button_back_bg"
+        android:alpha="0.7"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Фиксированная кнопка "далее" в правом нижнем углу -->
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="далее"
+        android:textSize="25sp"
+        android:fontFamily="@font/panton_rust_scr_sm_bold_gr"
+        android:textColor="@color/black"
+        android:background="@drawable/button_back_bg"
+        android:alpha="0.7"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

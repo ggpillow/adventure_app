@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AdventureApp"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <activity
+            android:name=".ui.scenario.CreatedItemActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.scenario.ItemCombinationsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.scenario.SelectedEndingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.scenario.EndingSelectionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.scenario.EndingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.scenario.MemoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.scenario.ParagraphDisplayActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.scenario.StoryGameplayActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.scenario.StartScenarioTextActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.BaseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.scenario.EpigraphActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.scenario.PreparationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.scenario.AllScenarioActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.settings.SettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.splash.SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+    </application>
+
+</manifest>

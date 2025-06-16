@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">AdventureApp</string>
+    <string name="music">Музыка</string>
+    <string name="voice">Голос</string>
+    <string name="back">Назад</string>
+    <string name="button_start">Начать</string>
+    <string name="button_settings">Настройки</string>
+    <string name="button_exit">Выход</string>
+    <string name="scenario_image_description">Изображение сценария</string>
+    <string name="scenario_title">Название сценария</string>
+    <string name="scenario_description">Мини-описание сюжета</string>
+    <string name="scenario_difficulty">Сложность: **</string>
+    <string name="epigraph_background">Эпиграф</string>
+</resources>

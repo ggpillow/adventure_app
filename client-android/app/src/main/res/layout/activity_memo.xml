@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gameplay_background"
+    android:padding="16dp"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="false">
+
+    <!-- Картинка памятки (загружается с сервера) -->
+    <ImageView
+        android:id="@+id/memoImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/buttonBack"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter" />
+
+    <!-- Кнопка "назад" в левом нижнем углу -->
+    <Button
+        android:id="@+id/buttonBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button_back_bg"
+        android:text="Назад"
+        android:textSize="20sp"
+        android:fontFamily="@font/panton_rust_scr_sm_bold_gr"
+        android:textColor="@color/black"
+        android:alpha="0.9" />
+</RelativeLayout>

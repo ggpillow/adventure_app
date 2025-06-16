@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/all_scenario_background"
+    android:fitsSystemWindows="true"
+    android:paddingTop="?attr/actionBarSize"
+    tools:context=".ui.scenario.AllScenarioActivity">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/scenarioRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:clipToPadding="false"
+        android:paddingStart="64dp"
+        android:paddingEnd="64dp"
+        tools:listitem="@layout/item_scenario_card"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!-- Кнопка "Назад" -->
+    <Button
+        android:id="@+id/button_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="назад"
+        android:textSize="25sp"
+        android:fontFamily="@font/panton_rust_scr_sm_bold_gr"
+        android:textColor="@color/black"
+        android:background="@drawable/button_back_bg"
+        android:alpha="0.7"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

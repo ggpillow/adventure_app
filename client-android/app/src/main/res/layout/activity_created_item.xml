@@ -1,0 +1,48 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gameplay_background"
+    android:padding="24dp"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="false"
+    android:clipChildren="false">
+
+    <!-- Заголовок -->
+    <TextView
+        android:id="@+id/createdItemLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ты создал предмет:"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:fontFamily="@font/tempogrunge" />
+
+    <!-- Картинка предмета -->
+    <ImageView
+        android:id="@+id/createdItemImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/createdItemLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:adjustViewBounds="true"
+        android:maxHeight="300dp"
+        android:scaleType="fitCenter" />
+
+    <!-- Кнопка "Хорошо" -->
+    <Button
+        android:id="@+id/buttonBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="хорошо"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button_back_bg"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:fontFamily="@font/panton_rust_scr_sm_bold_gr"
+        android:alpha="0.9" />
+</RelativeLayout>

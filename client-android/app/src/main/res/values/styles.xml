@@ -1,0 +1,22 @@
+<resources>
+
+    <!-- ✅ Кастомный стиль для AlertDialog -->
+    <style name="AlertDialogCustom" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="buttonIconTint">@color/black</item>
+    </style>
+
+    <!-- ✅ Стиль для кнопки "Да" -->
+    <style name="DialogPositiveButton" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_gravity">end</item>
+    </style>
+
+    <!-- ✅ Стиль для кнопки "Нет" -->
+    <style name="DialogNegativeButton" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_gravity">start</item>
+    </style>
+
+</resources>

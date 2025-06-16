@@ -1,0 +1,24 @@
+# Android Studio
+*.iml
+.gradle/
+local.properties
+.idea/
+build/
+captures/
+output/
+*.apk
+
+# Java / Spring Boot / IntelliJ
+*.class
+*.log
+/out/
+target/
+*.jar
+*.war
+*.ear
+*.ipr
+*.iws
+
+# System
+.DS_Store
+Thumbs.db

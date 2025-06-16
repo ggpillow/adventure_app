@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorBackground">#ccffffff</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Кнопки -->
+    <color name="button_default">#CCFFFFFF</color> <!-- Цвет кнопки по умолчанию -->
+    <color name="button_pressed">#CCCCCC</color>   <!-- Светло серый при нажатии -->
+
+    <!-- Стили -->
+    <color name="snow_blue">#A9CCE3</color>        <!-- Мягкий снежно-синий -->
+    <color name="switch_thumb">#ffffff</color>     <!-- Белый переключатель -->
+    <color name="gray">#333333</color>             <!-- Нейтральный/тёмно-серый -->
+    <color name="light_red">#FFBDBD</color>        <!-- Светло-красный -->
+    <color name="light_pink_red">#FEECEC</color>   <!-- Полупрозрачный розово-красный -->
+
+    <!-- Для эффектов -->
+    <color name="effect_positive">#558B2F</color>  <!-- Приземлённый зелёный (оливковый, не ядовитый) -->
+    <color name="effect_negative">#B71C1C</color>  <!-- Приглушённый тёмно-красный -->
+    <color name="effect_neutral">#666666</color>   <!-- Мягкий серый для нейтрального -->
+</resources>

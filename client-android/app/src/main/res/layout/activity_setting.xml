@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/settings_background"
+    android:fitsSystemWindows="true"
+    android:paddingTop="?attr/actionBarSize"
+    tools:context=".ui.settings.SettingActivity">
+
+    <!-- Заголовок "МУЗЫКА" -->
+
+    <!-- Переключатель для музыки -->
+
+    <!-- Заголовок "ГОЛОС" -->
+
+    <TextView
+        android:id="@+id/text_music"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="100dp"
+        android:fontFamily="@font/panton_rust_heavy_grsh"
+        android:text="МУЗЫКА"
+        android:textColor="@color/white"
+        android:textSize="36sp" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_music"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@id/text_music"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="115dp"
+        android:checked="true"
+        android:scaleX="1.8"
+        android:scaleY="1.6"
+        android:thumbTint="@color/white"
+        android:trackTint="@color/snow_blue" />
+
+    <TextView
+        android:id="@+id/text_voice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_music"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="60dp"
+        android:text="ГОЛОС"
+        android:textSize="36sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/panton_rust_heavy_grsh" />
+
+    <!-- Переключатель для голоса -->
+
+    <!-- Кнопка "назад" -->
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_voice"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@id/text_voice"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="115dp"
+        android:checked="true"
+        android:scaleX="1.8"
+        android:scaleY="1.6"
+        android:thumbTint="@color/white"
+        android:trackTint="@color/snow_blue" />
+
+    <Button
+        android:id="@+id/button_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="32dp"
+        android:text="назад"
+        android:textSize="24sp"
+        android:fontFamily="@font/panton_rust_scr_sm_bold_gr"
+        android:textColor="@color/black"
+        android:background="@drawable/button_back_bg"
+        android:alpha="0.7" />
+</RelativeLayout>

@@ -6,6 +6,7 @@ import android.widget.*;
 import androidx.core.content.ContextCompat;
 
 import com.example.adventureapp.R;
+import com.example.adventureapp.data.cache.DataCache;
 import com.example.adventureapp.data.model.Effect;
 import com.example.adventureapp.data.network.ApiClient;
 import com.example.adventureapp.data.network.EffectApi;
@@ -92,7 +93,6 @@ public class ParagraphDisplayActivity extends BaseActivity {
                             com.example.adventureapp.data.model.Paragraph paragraph = response.body();
                             String formattedText = paragraph.getParagraphDescr().replace("<br><br>", "\n\n");
                             paragraphTextView.setText(formattedText);
-
                             Long effectId = paragraph.getEffectId();
                             if (effectId != null) {
                                 loadEffect(effectId);
@@ -114,31 +114,24 @@ public class ParagraphDisplayActivity extends BaseActivity {
     }
 
     private void loadEffect(Long effectId) {
+        // Попробуем найти эффект в кеше
+        if (DataCache.effects != null) {
+            for (Effect effect : DataCache.effects) {
+                if (effect.getId().equals(effectId)) {
+                    showEffect(effect);
+                    return;
+                }
+            }
+        }
+
+        // Если нет — грузим с сервера
         ApiClient.getClient().create(EffectApi.class)
                 .getEffectById(effectId)
                 .enqueue(new Callback<Effect>() {
                     @Override
                     public void onResponse(Call<Effect> call, Response<Effect> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            Effect effect = response.body();
-
-                            String rawDescription = effect.getDescription();
-                            String formattedDescription = rawDescription.replace("<br><br>", "\n\n");
-                            effectTextView.setText(formattedDescription);
-
-                            int color;
-                            switch (effect.getEffectType()) {
-                                case "positive":
-                                    color = R.color.effect_positive;
-                                    break;
-                                case "negative":
-                                    color = R.color.effect_negative;
-                                    break;
-                                default:
-                                    color = R.color.effect_neutral;
-                                    break;
-                            }
-                            effectTextView.setTextColor(ContextCompat.getColor(ParagraphDisplayActivity.this, color));
+                            showEffect(response.body());
                         } else {
                             effectTextView.setText("Эффект не найден");
                             effectTextView.setTextColor(ContextCompat.getColor(ParagraphDisplayActivity.this, R.color.gray));
@@ -151,5 +144,24 @@ public class ParagraphDisplayActivity extends BaseActivity {
                         effectTextView.setTextColor(ContextCompat.getColor(ParagraphDisplayActivity.this, R.color.gray));
                     }
                 });
+    }
+
+    private void showEffect(Effect effect) {
+        String formattedDescription = effect.getDescription().replace("<br><br>", "\n\n");
+        effectTextView.setText(formattedDescription);
+
+        int color;
+        switch (effect.getEffectType()) {
+            case "positive":
+                color = R.color.effect_positive;
+                break;
+            case "negative":
+                color = R.color.effect_negative;
+                break;
+            default:
+                color = R.color.effect_neutral;
+                break;
+        }
+        effectTextView.setTextColor(ContextCompat.getColor(ParagraphDisplayActivity.this, color));
     }
 }

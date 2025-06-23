@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.adventureapp.R;
+import com.example.adventureapp.data.cache.DataCache;
+import com.example.adventureapp.data.model.Resource;
 import com.example.adventureapp.data.network.ApiConfig;
 
 public class CreatedItemActivity extends AppCompatActivity {
@@ -26,9 +28,24 @@ public class CreatedItemActivity extends AppCompatActivity {
         String imagePath = intent.getStringExtra("imageItem"); // путь к изображению
         long scenarioId = intent.getLongExtra("scenarioId", -1);
 
-        // Безопасная загрузка изображения
+        // Поиск в кэше ресурсов по imagePath
+        String fullUrl = null;
         if (imagePath != null && !imagePath.trim().isEmpty()) {
-            String fullUrl = imagePath.startsWith("http") ? imagePath : ApiConfig.BASE_URL + imagePath;
+            if (DataCache.resources != null) {
+                for (Resource res : DataCache.resources) {
+                    if (imagePath.contains(res.getName())) {
+                        fullUrl = ApiConfig.BASE_URL + "images/resources/" + res.getName().toLowerCase() + ".png";
+                        break;
+                    }
+                }
+            }
+            if (fullUrl == null) {
+                fullUrl = imagePath.startsWith("http") ? imagePath : ApiConfig.BASE_URL + imagePath;
+            }
+        }
+
+        // Загрузка изображения
+        if (fullUrl != null) {
             Glide.with(this)
                     .load(fullUrl)
                     .error(R.drawable.error_image)

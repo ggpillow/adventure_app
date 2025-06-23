@@ -3,16 +3,20 @@ package com.example.adventureapp.ui.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.adventureapp.R;
+import com.example.adventureapp.data.cache.DataCache;
+import com.example.adventureapp.data.model.Scenario;
 import com.example.adventureapp.databinding.ActivityMainBinding;
 import com.example.adventureapp.ui.BaseActivity;
 import com.example.adventureapp.ui.scenario.AllScenarioActivity;
 import com.example.adventureapp.ui.settings.SettingActivity;
 import com.example.adventureapp.utils.MusicManager;
 
-public class MainActivity extends BaseActivity {
+import java.util.List;
 
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
     private ActivityMainBinding binding;
@@ -27,7 +31,15 @@ public class MainActivity extends BaseActivity {
 
         //MusicManager.start(this); // Воспроизводим музыку, если включена в настройках
 
+        checkCacheIntegrity();
         setupListeners();
+    }
+
+    private void checkCacheIntegrity() {
+        if (DataCache.scenarios == null || DataCache.scenarios.isEmpty()) {
+            Toast.makeText(this, "Внимание: сценарии не загружены", Toast.LENGTH_LONG).show();
+            Log.w(TAG, "DataCache.scenarios is null or empty. Возможно, SplashActivity была пропущена.");
+        }
     }
 
     private void setupListeners() {

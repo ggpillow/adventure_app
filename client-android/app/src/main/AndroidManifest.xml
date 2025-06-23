@@ -22,9 +22,6 @@
             android:name=".ui.scenario.ItemCombinationsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.scenario.SelectedEndingActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.scenario.EndingSelectionActivity"
             android:exported="false" />
         <activity

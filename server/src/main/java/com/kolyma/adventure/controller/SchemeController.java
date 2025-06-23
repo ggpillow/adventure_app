@@ -26,4 +26,12 @@ public class SchemeController {
         if (dtos.isEmpty()) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(dtos);
     }
+
+    @GetMapping
+    public ResponseEntity<List<SchemeDTO>> getAllSchemes() {
+        var dtos = schemeService.getAll().stream()
+                .map(SchemeMapper::toDTO)
+                .toList();
+        return ResponseEntity.ok(dtos);
+    }
 }

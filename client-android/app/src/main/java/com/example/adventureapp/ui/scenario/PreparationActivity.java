@@ -6,19 +6,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.adventureapp.R;
+import com.example.adventureapp.data.cache.DataCache;
 import com.example.adventureapp.data.model.Scheme;
-import com.example.adventureapp.data.network.ApiClient;
 import com.example.adventureapp.data.network.ApiConfig;
-import com.example.adventureapp.data.network.SchemeApi;
 import com.example.adventureapp.databinding.ActivityPreparationBinding;
 import com.example.adventureapp.ui.BaseActivity;
 import com.example.adventureapp.utils.MusicManager;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class PreparationActivity extends BaseActivity {
 
@@ -30,7 +26,6 @@ public class PreparationActivity extends BaseActivity {
     private String schemeUrl;
     private String audioUrl;
 
-    private boolean schemeLoaded = false;
     private boolean isNavigating = false;
 
     @Override
@@ -39,7 +34,6 @@ public class PreparationActivity extends BaseActivity {
         binding = ActivityPreparationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Назначаем ID кнопки "Назад" для BaseActivity
         backButtonId = binding.backButton.getId();
 
         getExtrasFromIntent();
@@ -52,8 +46,7 @@ public class PreparationActivity extends BaseActivity {
         binding.startButton.setOnClickListener(v -> {
             if (isNavigating) return;
             isNavigating = true;
-
-            MusicManager.stopVoice(); // останавливаем озвучку
+            MusicManager.stopVoice();
             Intent intent = new Intent(this, EpigraphActivity.class);
             intent.putExtra("scenarioId", scenarioId);
             intent.putExtra("title", title);
@@ -62,7 +55,7 @@ public class PreparationActivity extends BaseActivity {
             finish();
         });
 
-        loadSchemeForScenario(scenarioId);
+        loadSchemeFromCache(scenarioId);
     }
 
     private void getExtrasFromIntent() {
@@ -77,47 +70,52 @@ public class PreparationActivity extends BaseActivity {
     private void setContent() {
         binding.titleText.setText(title);
 
-        // Загружаем вспомогательные изображения
-        loadImage(ApiConfig.BASE_URL + "images/components/cards/imageTails.jpg", binding.tilesImage);
-        loadImage(ApiConfig.BASE_URL + "images/components/cards/imageCards.jpg", binding.cardsImage);
+        // Загружаем карточки и тайлы через BASE_URL
+        String base = ApiConfig.BASE_URL;
+        loadImage(base + "images/components/cards/imageTails.jpg", binding.tilesImage);
+        loadImage(base + "images/components/cards/imageCards.jpg", binding.cardsImage);
     }
 
     private void loadImage(String url, android.widget.ImageView imageView) {
-        String fullUrl = url.startsWith("http") ? url : ApiConfig.BASE_URL + url;
-        Log.d("IMAGE_LOAD", "Loading image from URL: " + fullUrl);
-
         Glide.with(this)
-                .load(fullUrl)
+                .load(url)
+                .error(R.drawable.error_image)
                 .into(imageView);
     }
 
-    private void loadSchemeForScenario(long scenarioId) {
-        if (schemeLoaded) return;
+    private void loadSchemeFromCache(long scenarioId) {
+        List<Scheme> allSchemes = DataCache.schemes;
+        Log.d("PreparationActivity", "Поиск схемы для сценария ID=" + scenarioId);
 
-        SchemeApi api = ApiClient.getClient().create(SchemeApi.class);
-        api.getSchemesByScenario(scenarioId).enqueue(new Callback<List<Scheme>>() {
-            @Override
-            public void onResponse(Call<List<Scheme>> call, Response<List<Scheme>> response) {
-                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    String url = response.body().get(0).getImageSchemes();
-                    Log.d("PreparationActivity", "Схема: " + url);
-                    schemeLoaded = true;
-                    loadImage(url, binding.fieldImage);
-                } else {
-                    Toast.makeText(PreparationActivity.this, "Ошибка загрузки схемы", Toast.LENGTH_SHORT).show();
+        if (allSchemes != null && !allSchemes.isEmpty()) {
+            Log.d("PreparationActivity", "Размер кэша схем: " + allSchemes.size());
+            for (Scheme scheme : allSchemes) {
+                String path = scheme.getImageSchemes();
+                Log.d("PreparationActivity", "Кандидат: id=" + scheme.getId() + ", path=" + path);
+
+                if (path != null && !path.trim().isEmpty()) {
+                    String fullUrl = path.startsWith("http") ? path : ApiConfig.BASE_URL + path;
+
+                    Glide.with(this)
+                            .load(fullUrl)
+                            .error(R.drawable.error_image)
+                            .into(binding.fieldImage);
+
+                    Log.d("PreparationActivity", "Схема загружена: " + fullUrl);
+                    return;
                 }
             }
-            @Override
-            public void onFailure(Call<List<Scheme>> call, Throwable t) {
-                Log.e("PreparationActivity", "Ошибка загрузки схемы: " + t.getMessage());
-                Toast.makeText(PreparationActivity.this, "Не удалось загрузить схему", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
+            Log.w("PreparationActivity", "Схемы найдены, но все пути пустые");
+            Toast.makeText(this, "Путь к схеме отсутствует", Toast.LENGTH_SHORT).show();
+        } else {
+            Log.e("PreparationActivity", "Кэш схем пуст");
+            Toast.makeText(this, "Схемы не загружены. Перезапустите приложение.", Toast.LENGTH_SHORT).show();
+        }
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MusicManager.stopVoice(); // на случай, если пользователь просто закрыл экран
+        MusicManager.stopVoice();
     }
 }

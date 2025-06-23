@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.adventureapp.R;
+import com.example.adventureapp.data.cache.DataCache;
 import com.example.adventureapp.data.model.Ending;
 import com.example.adventureapp.data.network.ApiClient;
 import com.example.adventureapp.data.network.EndingApi;
@@ -64,31 +65,27 @@ public class EndingActivity extends BaseActivity {
         btnAlone.setText("Никто не выжил");
         btnAltEnding.setText("Альтернатива");
 
-        loadEndings();
+        loadEndingsFromCacheOrApi();
     }
 
-    private void loadEndings() {
+    private void loadEndingsFromCacheOrApi() {
+        List<Ending> all = DataCache.endings;
+        if (all != null) {
+            Log.d("EndingDebug", "Загружаем концовки из кэша");
+            processEndings(all);
+        } else {
+            Log.d("EndingDebug", "Кэш пуст. Загружаем с сервера");
+            loadEndingsFromApi();
+        }
+    }
+
+    private void loadEndingsFromApi() {
         EndingApi api = ApiClient.getClient().create(EndingApi.class);
         api.getEndingsByScenario(scenarioId).enqueue(new Callback<List<Ending>>() {
             @Override
             public void onResponse(Call<List<Ending>> call, Response<List<Ending>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    for (Ending e : response.body()) {
-                        String title = e.getTitleEnding() != null ? e.getTitleEnding().trim() : "";
-                        String alt = e.getAltQuestion();
-                        Log.d("EndingDebug", "Обнаружена концовка: " + title + " | altQuestion=" + alt);
-
-                        if (title.equalsIgnoreCase("Лучший исход")) {
-                            endingBest = e;
-                        } else if (title.equalsIgnoreCase("Тяжелая утрата")) {
-                            endingSad = e;
-                        } else if (title.equalsIgnoreCase("Безысходность")) {
-                            endingAlone = e;
-                        } else if (alt != null && !alt.trim().isEmpty()) {
-                            endingAlt = e;
-                        }
-                    }
-                    setupButtonActions();
+                    processEndings(response.body());
                 } else {
                     Toast.makeText(EndingActivity.this, "Ошибка загрузки концовок", Toast.LENGTH_SHORT).show();
                 }
@@ -101,6 +98,30 @@ public class EndingActivity extends BaseActivity {
             }
         });
     }
+
+    private void processEndings(List<Ending> list) {
+        for (Ending e : list) {
+            if (!scenarioIdEquals(e.getScenarioId())) continue;
+
+            String title = e.getTitleEnding() != null ? e.getTitleEnding().trim() : "";
+            String alt = e.getAltQuestion();
+            if (title.equalsIgnoreCase("Лучший исход")) {
+                endingBest = e;
+            } else if (title.equalsIgnoreCase("Тяжелая утрата")) {
+                endingSad = e;
+            } else if (title.equalsIgnoreCase("Безысходность")) {
+                endingAlone = e;
+            } else if (alt != null && !alt.trim().isEmpty()) {
+                endingAlt = e;
+            }
+        }
+        setupButtonActions();
+    }
+
+    private boolean scenarioIdEquals(Long id) {
+        return id != null && id.equals(scenarioId);
+    }
+
     private void setupButtonActions() {
         if (endingBest != null) {
             btnAllSurvived.setOnClickListener(v -> {
@@ -110,6 +131,7 @@ public class EndingActivity extends BaseActivity {
         } else {
             btnAllSurvived.setEnabled(false);
         }
+
         if (endingSad != null) {
             btnSomeoneDied.setOnClickListener(v -> {
                 if (!isClickAllowed()) return;
@@ -131,12 +153,11 @@ public class EndingActivity extends BaseActivity {
         if (endingAlt != null) {
             btnAltEnding.setOnClickListener(v -> {
                 if (!isClickAllowed()) return;
-                String safeQuestion = endingAlt.getAltQuestion();
-                if (safeQuestion != null) safeQuestion = safeQuestion.trim();
-                if (safeQuestion != null && safeQuestion.length() > 500) {
-                    safeQuestion = safeQuestion.substring(0, 500);
+                String question = endingAlt.getAltQuestion();
+                if (question != null && question.length() > 500) {
+                    question = question.substring(0, 500);
                 }
-                showCustomAltDialog(safeQuestion, endingAlt.getId());
+                showCustomAltDialog(question, endingAlt.getId());
             });
         } else {
             btnAltEnding.setEnabled(false);
@@ -163,7 +184,7 @@ public class EndingActivity extends BaseActivity {
         String finalSafeText = safeText;
         buttonYes.setOnClickListener(v -> {
             dialog.dismiss();
-            Log.d("EndingDebug", "Подтверждена альт. концовка ID=" + endingId + ", вопрос=" + finalSafeText);
+            Log.d("EndingDebug", "Подтверждена альт. концовка ID=" + endingId);
             openEndingSelection(endingId, finalSafeText);
         });
 

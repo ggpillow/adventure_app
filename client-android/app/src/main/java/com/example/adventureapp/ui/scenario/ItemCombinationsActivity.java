@@ -2,11 +2,12 @@ package com.example.adventureapp.ui.scenario;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
+import androidx.core.content.ContextCompat;
 
 import com.example.adventureapp.R;
+import com.example.adventureapp.data.cache.DataCache;
 import com.example.adventureapp.data.model.ItemCombinations;
 import com.example.adventureapp.data.model.Resource;
 import com.example.adventureapp.data.network.ApiClient;
@@ -45,7 +46,7 @@ public class ItemCombinationsActivity extends BaseActivity {
         backButtonId = R.id.buttonBack;
 
         scenarioId = getIntent().getLongExtra("scenarioId", -1);
-        loadResources();
+        loadResourcesFromCacheOrApi();
 
         buttonBack.setOnClickListener(v -> {
             Intent intent = new Intent(this, StoryGameplayActivity.class);
@@ -74,40 +75,48 @@ public class ItemCombinationsActivity extends BaseActivity {
         });
     }
 
-    private void loadResources() {
-        ResourceApi api = ApiClient.getClient().create(ResourceApi.class);
-        api.getAllResources().enqueue(new Callback<List<Resource>>() {
-            @Override
-            public void onResponse(Call<List<Resource>> call, Response<List<Resource>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    allResources.clear();
-                    allResources.addAll(response.body());
-
-                    for (Resource res : allResources) {
-                        View view = getLayoutInflater().inflate(R.layout.item_resource_checkbox, resourcesContainer, false);
-                        TextView name = view.findViewById(R.id.resourceName);
-                        CheckBox checkBox = view.findViewById(R.id.resourceCheckbox);
-                        name.setText(res.getName());
-
-                        checkBox.setOnCheckedChangeListener((button, isChecked) -> {
-                            int selectedCount = (int) checkBoxes.stream().filter(CheckBox::isChecked).count();
-                            for (CheckBox cb : checkBoxes) {
-                                cb.setEnabled(selectedCount < 2 || cb.isChecked());
-                            }
-                        });
-                        checkBoxes.add(checkBox);
-                        resourcesContainer.addView(view);
+    private void loadResourcesFromCacheOrApi() {
+        List<Resource> cached = DataCache.resources;
+        if (cached != null && !cached.isEmpty()) {
+            displayResources(cached);
+        } else {
+            ResourceApi api = ApiClient.getClient().create(ResourceApi.class);
+            api.getAllResources().enqueue(new Callback<List<Resource>>() {
+                @Override
+                public void onResponse(Call<List<Resource>> call, Response<List<Resource>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        DataCache.resources = response.body();
+                        displayResources(response.body());
+                    } else {
+                        Toast.makeText(ItemCombinationsActivity.this, "Ошибка загрузки ресурсов", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(ItemCombinationsActivity.this, "Ошибка загрузки ресурсов", Toast.LENGTH_SHORT).show();
                 }
-            }
 
-            @Override
-            public void onFailure(Call<List<Resource>> call, Throwable t) {
-                Toast.makeText(ItemCombinationsActivity.this, "Ошибка подключения", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<List<Resource>> call, Throwable t) {
+                    Toast.makeText(ItemCombinationsActivity.this, "Ошибка подключения", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+    private void displayResources(List<Resource> resources) {
+        allResources.clear();
+        allResources.addAll(resources);
+        for (Resource res : allResources) {
+            View view = getLayoutInflater().inflate(R.layout.item_resource_checkbox, resourcesContainer, false);
+            TextView name = view.findViewById(R.id.resourceName);
+            CheckBox checkBox = view.findViewById(R.id.resourceCheckbox);
+            name.setText(res.getName());
+
+            checkBox.setOnCheckedChangeListener((button, isChecked) -> {
+                int selectedCount = (int) checkBoxes.stream().filter(CheckBox::isChecked).count();
+                for (CheckBox cb : checkBoxes) {
+                    cb.setEnabled(selectedCount < 2 || cb.isChecked());
+                }
+            });
+            checkBoxes.add(checkBox);
+            resourcesContainer.addView(view);
+        }
     }
 
     private void attemptCraft(Long id1, Long id2) {

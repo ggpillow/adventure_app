@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.adventureapp.R;
 import com.example.adventureapp.data.model.Paragraph;
 import com.example.adventureapp.data.network.ApiClient;
 import com.example.adventureapp.data.network.ParagraphApi;
-import java.util.List;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -18,6 +22,9 @@ public class StoryGameplayActivity extends AppCompatActivity {
     private EditText inputParagraphId;
     private Button buttonOk, buttonMemo, buttonCreateItem, buttonEndAdventure;
     private long scenarioId;
+
+    private final Map<Integer, Paragraph> paragraphCache = new HashMap<>();
+    private boolean isRequestInProgress = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,24 +37,26 @@ public class StoryGameplayActivity extends AppCompatActivity {
         buttonCreateItem = findViewById(R.id.buttonCreateItem);
         buttonEndAdventure = findViewById(R.id.buttonEndAdventure);
 
-        scenarioId = getIntent().getLongExtra("scenarioId", -1); // получаем ID
+        scenarioId = getIntent().getLongExtra("scenarioId", -1);
 
         buttonOk.setOnClickListener(v -> {
+            if (isRequestInProgress) return;
+
             String input = inputParagraphId.getText().toString().trim();
             if (input.isEmpty()) {
                 Toast.makeText(this, "Введите номер абзаца", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            long paragraphId;
+            int paragraphNumber;
             try {
-                paragraphId = Long.parseLong(input);
+                paragraphNumber = Integer.parseInt(input);
             } catch (NumberFormatException e) {
                 Toast.makeText(this, "Неверный формат номера", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            loadParagraph(paragraphId);
+            fetchOrLoadParagraph(paragraphNumber);
         });
 
         buttonMemo.setOnClickListener(v -> {
@@ -64,25 +73,31 @@ public class StoryGameplayActivity extends AppCompatActivity {
 
         buttonEndAdventure.setOnClickListener(v -> {
             Intent intent = new Intent(this, EndingActivity.class);
-            intent.putExtra("scenarioId", scenarioId); // передаём ID
+            intent.putExtra("scenarioId", scenarioId);
             startActivity(intent);
         });
     }
 
-    private void loadParagraph(long paragraphNumber) {
+    private void fetchOrLoadParagraph(int number) {
+        if (paragraphCache.containsKey(number)) {
+            openParagraph(paragraphCache.get(number));
+            return;
+        }
+
+        isRequestInProgress = true;
+        buttonOk.setEnabled(false);
+
         ParagraphApi api = ApiClient.getClient().create(ParagraphApi.class);
-        api.getParagraphByNumber((int) paragraphNumber).enqueue(new Callback<Paragraph>() {
+        api.getParagraphByNumber(number).enqueue(new Callback<Paragraph>() {
             @Override
             public void onResponse(Call<Paragraph> call, Response<Paragraph> response) {
+                isRequestInProgress = false;
+                buttonOk.setEnabled(true);
+
                 if (response.isSuccessful() && response.body() != null) {
                     Paragraph paragraph = response.body();
-
-                    Intent intent = new Intent(StoryGameplayActivity.this, ParagraphDisplayActivity.class);
-                    intent.putExtra("paragraphText", paragraph.getParagraphDescr());
-                    intent.putExtra("paragraphNumber", paragraph.getParagraphNumber()); // 🔸 если нужно
-                    intent.putExtra("effectId", paragraph.getEffectId());               // 🔸 обязательно
-                    intent.putExtra("scenarioId", scenarioId);
-                    startActivity(intent);
+                    paragraphCache.put(number, paragraph);
+                    openParagraph(paragraph);
                 } else {
                     Toast.makeText(StoryGameplayActivity.this, "Абзац не найден", Toast.LENGTH_SHORT).show();
                 }
@@ -90,8 +105,18 @@ public class StoryGameplayActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Paragraph> call, Throwable t) {
-                Toast.makeText(StoryGameplayActivity.this, "Ошибка загрузки: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                isRequestInProgress = false;
+                buttonOk.setEnabled(true);
+                Toast.makeText(StoryGameplayActivity.this, "Ошибка: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void openParagraph(Paragraph paragraph) {
+        Intent intent = new Intent(this, ParagraphDisplayActivity.class);
+        intent.putExtra("paragraphText", paragraph.getParagraphDescr());
+        intent.putExtra("paragraphNumber", paragraph.getParagraphNumber());
+        intent.putExtra("effectId", paragraph.getEffectId());
+        intent.putExtra("scenarioId", scenarioId);
+        startActivity(intent);
     }
 }

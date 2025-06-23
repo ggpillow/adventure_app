@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/black">
 
-    <!-- Фоновое изображение -->
+    <!-- Фон -->
     <ImageView
         android:id="@+id/splashImage"
         android:layout_width="match_parent"
@@ -14,16 +14,45 @@
         android:src="@drawable/main_background"
         android:importantForAccessibility="no" />
 
-    <!-- Простой TextView с кастомным шрифтом и центровкой -->
+    <!-- Надпись "ЗАГРУЗКА" -->
     <TextView
         android:id="@+id/splashText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:gravity="center"
         android:padding="16dp"
         android:text="ЗАГРУЗКА"
         android:textColor="@android:color/white"
         android:textSize="45sp"
         android:fontFamily="@font/panton_rust_heavy_grsh" />
+
+    <!-- Прогресс-бар -->
+    <ProgressBar
+        android:id="@+id/splashProgress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/splashText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:progressDrawable="@drawable/progress_white"
+        android:max="100"
+        android:progress="0" />
+
+    <!-- Совет -->
+    <TextView
+        android:id="@+id/splashTips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/splashProgress"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center"
+        android:text="Совет: делитесь и обменивайтесь – это залог выживания!"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:fontFamily="@font/panton_rust_scr_sm_bold_gr" />
 </RelativeLayout>

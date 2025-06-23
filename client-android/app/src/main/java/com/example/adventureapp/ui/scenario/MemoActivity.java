@@ -13,8 +13,6 @@ import com.example.adventureapp.data.network.ApiConfig;
 
 public class MemoActivity extends AppCompatActivity {
 
-    private String sourceActivity;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,28 +21,27 @@ public class MemoActivity extends AppCompatActivity {
         ImageView memoImage = findViewById(R.id.memoImageView);
         Button buttonBack = findViewById(R.id.buttonBack);
 
-        // Загружаем картинку
+        // Загружаем предкешированное изображение
         String imageUrl = ApiConfig.BASE_URL + "images/memo/memo_table.jpg";
         Glide.with(this)
                 .load(imageUrl)
                 .error(R.drawable.error_image)
                 .into(memoImage);
 
-        // Получаем имя активности-источника
-        sourceActivity = getIntent().getStringExtra("source");
-
+        // Возврат в активити-источник
+        String sourceActivity = getIntent().getStringExtra("source");
         buttonBack.setOnClickListener(v -> {
+            Intent intent;
             if ("StoryGameplayActivity".equals(sourceActivity)) {
-                Intent intent = new Intent(this, StoryGameplayActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
+                intent = new Intent(this, StoryGameplayActivity.class);
             } else if ("ParagraphDisplayActivity".equals(sourceActivity)) {
-                Intent intent = new Intent(this, ParagraphDisplayActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
+                intent = new Intent(this, ParagraphDisplayActivity.class);
             } else {
-                finish(); // если неизвестен источник — просто закрыть
+                finish(); // неизвестный источник
+                return;
             }
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
         });
     }
 }

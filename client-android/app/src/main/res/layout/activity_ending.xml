@@ -7,18 +7,18 @@
     android:fitsSystemWindows="true"
     android:clipToPadding="false">
 
-    <!-- Контейнер с кнопками концовок -->
+    <!-- Контейнер с кнопками концовок по центру экрана -->
     <LinearLayout
         android:id="@+id/endingButtonsContainer"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerInParent="true"
-        android:gravity="center">
+        android:gravity="center_horizontal">
 
         <Button
             android:id="@+id/buttonAllSurvived"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:text="Спаслись все"
             android:background="@drawable/button_back_bg"
@@ -29,7 +29,7 @@
 
         <Button
             android:id="@+id/buttonSomeoneDied"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:text="Кто-то из нас пал"
             android:background="@drawable/button_back_bg"
@@ -40,21 +40,20 @@
 
         <Button
             android:id="@+id/buttonAlone"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="Я остался один"
+            android:text="Никто не выжил"
             android:background="@drawable/button_back_bg"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:fontFamily="@font/panton_rust_scr_sm_bold_gr"
             android:layout_marginBottom="12dp" />
 
-        <!-- Альтернативная концовка с красным фоном -->
         <Button
             android:id="@+id/buttonAltEnding"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="Альтернативная концовка"
+            android:text="Альтернатива"
             android:backgroundTint="@android:color/holo_red_light"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -62,7 +61,7 @@
             android:layout_marginBottom="12dp" />
     </LinearLayout>
 
-    <!-- Кнопка Назад -->
+    <!-- Кнопка Назад снизу -->
     <Button
         android:id="@+id/buttonBack"
         android:layout_width="wrap_content"

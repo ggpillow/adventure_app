@@ -21,4 +21,7 @@ public interface EndingApi {
             @Path("scenarioId") Long scenarioId,
             @Query("titleEnding") String titleEnding
     );
+
+    @GET("endings")
+    Call<List<Ending>> getAllEndings();
 }

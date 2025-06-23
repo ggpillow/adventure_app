@@ -28,6 +28,14 @@ public class EndingController {
         return ResponseEntity.ok(dtos);
     }
 
+    @GetMapping
+    public ResponseEntity<List<EndingDTO>> getAllEndings() {
+        var dtos = endingService.getAll().stream()
+                .map(EndingMapper::toDTO)
+                .toList();
+        return ResponseEntity.ok(dtos);
+    }
+
     // Получить одну концовку по ID сценария и названию концовки
     @GetMapping("/scenario/{scenarioId}/title")
     public ResponseEntity<EndingDTO> getEndingByScenarioAndTitle(

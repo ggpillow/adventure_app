@@ -85,15 +85,21 @@ public class PreparationActivity extends BaseActivity {
 
     private void loadSchemeFromCache(long scenarioId) {
         List<Scheme> allSchemes = DataCache.schemes;
+
         Log.d("PreparationActivity", "Поиск схемы для сценария ID=" + scenarioId);
 
         if (allSchemes != null && !allSchemes.isEmpty()) {
             Log.d("PreparationActivity", "Размер кэша схем: " + allSchemes.size());
-            for (Scheme scheme : allSchemes) {
-                String path = scheme.getImageSchemes();
-                Log.d("PreparationActivity", "Кандидат: id=" + scheme.getId() + ", path=" + path);
 
-                if (path != null && !path.trim().isEmpty()) {
+            for (Scheme scheme : allSchemes) {
+                Long schemeScenarioId = scheme.getScenarioId();
+                String path = scheme.getImageSchemes();
+
+                Log.d("PreparationActivity", "Кандидат: id=" + scheme.getId()
+                        + ", scenarioId=" + schemeScenarioId
+                        + ", path=" + path);
+
+                if (schemeScenarioId != null && schemeScenarioId.equals(scenarioId) && path != null && !path.trim().isEmpty()) {
                     String fullUrl = path.startsWith("http") ? path : ApiConfig.BASE_URL + path;
 
                     Glide.with(this)
@@ -101,18 +107,19 @@ public class PreparationActivity extends BaseActivity {
                             .error(R.drawable.error_image)
                             .into(binding.fieldImage);
 
-                    Log.d("PreparationActivity", "Схема загружена: " + fullUrl);
+                    Log.d("PreparationActivity", "Схема найдена и загружена: " + fullUrl);
                     return;
                 }
             }
 
-            Log.w("PreparationActivity", "Схемы найдены, но все пути пустые");
-            Toast.makeText(this, "Путь к схеме отсутствует", Toast.LENGTH_SHORT).show();
+            Log.w("PreparationActivity", "Схема для сценария ID=" + scenarioId + " не найдена.");
+            Toast.makeText(this, "Схема не найдена для выбранного сценария", Toast.LENGTH_SHORT).show();
         } else {
             Log.e("PreparationActivity", "Кэш схем пуст");
             Toast.makeText(this, "Схемы не загружены. Перезапустите приложение.", Toast.LENGTH_SHORT).show();
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

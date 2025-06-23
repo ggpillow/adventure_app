@@ -56,7 +56,7 @@ public class SplashActivity extends AppCompatActivity {
         loadEffects();
         loadResources();
         loadEpigraphs();
-        loadEndings(); // 👈 ДОБАВЛЕНА ЗАГРУЗКА КОНЦОВОК
+        loadEndings();
     }
 
     private void checkAllLoaded() {
@@ -92,6 +92,7 @@ public class SplashActivity extends AppCompatActivity {
             public void onResponse(Call<List<Scheme>> call, Response<List<Scheme>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     DataCache.schemes = response.body();
+                    Log.d("SplashSchemes", "BASE_URL: " + ApiConfig.BASE_URL);
                     Log.d("SplashSchemes", "Загружено схем: " + DataCache.schemes.size());
                     for (Scheme scheme : DataCache.schemes) {
                         String url = scheme.getImageSchemes();
@@ -165,12 +166,11 @@ public class SplashActivity extends AppCompatActivity {
 
     private void loadEndings() {
         EndingApi api = ApiClient.getClient().create(EndingApi.class);
-        api.getEndingsByScenario(3L).enqueue(new Callback<List<Ending>>() {
+        api.getAllEndings().enqueue(new Callback<List<Ending>>() {
             @Override
             public void onResponse(Call<List<Ending>> call, Response<List<Ending>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     DataCache.endings = response.body();
-                    // 🔽 ЛОГИРУЕМ ПОЛУЧЕННЫЕ ДАННЫЕ
                     Log.d("SplashEndings", "Загружено концовок: " + DataCache.endings.size());
                     for (Ending e : DataCache.endings) {
                         Log.d("SplashEndings", "ID=" + e.getId()

@@ -100,11 +100,18 @@ public class EndingActivity extends BaseActivity {
     }
 
     private void processEndings(List<Ending> list) {
+        Log.d("EndingDebug", "Обработка концовок для сценария ID=" + scenarioId);
+
         for (Ending e : list) {
+            Log.d("EndingDebug", "Кандидат: id=" + e.getId()
+                    + ", title=" + e.getTitleEnding()
+                    + ", scenarioId=" + e.getScenarioId());
+
             if (!scenarioIdEquals(e.getScenarioId())) continue;
 
             String title = e.getTitleEnding() != null ? e.getTitleEnding().trim() : "";
             String alt = e.getAltQuestion();
+
             if (title.equalsIgnoreCase("Лучший исход")) {
                 endingBest = e;
             } else if (title.equalsIgnoreCase("Тяжелая утрата")) {
@@ -115,6 +122,8 @@ public class EndingActivity extends BaseActivity {
                 endingAlt = e;
             }
         }
+
+        Log.d("EndingDebug", "endingAlone is " + (endingAlone == null ? "NULL" : "NOT NULL"));
         setupButtonActions();
     }
 
@@ -140,6 +149,8 @@ public class EndingActivity extends BaseActivity {
         } else {
             btnSomeoneDied.setEnabled(false);
         }
+
+        Log.d("EndingDebug", "endingAlone is " + (endingAlone == null ? "NULL" : "NOT NULL"));
 
         if (endingAlone != null) {
             btnAlone.setOnClickListener(v -> {

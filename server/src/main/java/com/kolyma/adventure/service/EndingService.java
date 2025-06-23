@@ -31,4 +31,8 @@ public class EndingService {
                 new RuntimeException("Концовка с названием '" + titleEnding + "' для сценария " + scenarioId + " не найдена.")
         );
     }
+
+    public List<Ending> getAll() {
+        return endingRepository.findAll();
+    }
 }

@@ -3,6 +3,7 @@ package com.example.adventureapp.ui.scenario;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -58,7 +59,6 @@ public class EndingActivity extends BaseActivity {
             finish();
         });
 
-        // Названия кнопок – читаемые
         btnAllSurvived.setText("Спаслись все");
         btnSomeoneDied.setText("Кто-то из нас пал");
         btnAlone.setText("Никто не выжил");
@@ -74,14 +74,17 @@ public class EndingActivity extends BaseActivity {
             public void onResponse(Call<List<Ending>> call, Response<List<Ending>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     for (Ending e : response.body()) {
-                        String title = e.getTitleEnding().trim();
+                        String title = e.getTitleEnding() != null ? e.getTitleEnding().trim() : "";
+                        String alt = e.getAltQuestion();
+                        Log.d("EndingDebug", "Обнаружена концовка: " + title + " | altQuestion=" + alt);
+
                         if (title.equalsIgnoreCase("Лучший исход")) {
                             endingBest = e;
                         } else if (title.equalsIgnoreCase("Тяжелая утрата")) {
                             endingSad = e;
                         } else if (title.equalsIgnoreCase("Безысходность")) {
                             endingAlone = e;
-                        } else if (title.equalsIgnoreCase("Альтернативная концовка")) {
+                        } else if (alt != null && !alt.trim().isEmpty()) {
                             endingAlt = e;
                         }
                     }
@@ -94,10 +97,10 @@ public class EndingActivity extends BaseActivity {
             @Override
             public void onFailure(Call<List<Ending>> call, Throwable t) {
                 Toast.makeText(EndingActivity.this, "Ошибка подключения: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("EndingDebug", "Ошибка запроса концовок", t);
             }
         });
     }
-
     private void setupButtonActions() {
         if (endingBest != null) {
             btnAllSurvived.setOnClickListener(v -> {
@@ -128,7 +131,12 @@ public class EndingActivity extends BaseActivity {
         if (endingAlt != null) {
             btnAltEnding.setOnClickListener(v -> {
                 if (!isClickAllowed()) return;
-                showCustomAltDialog(endingAlt.getAltQuestion(), endingAlt.getId());
+                String safeQuestion = endingAlt.getAltQuestion();
+                if (safeQuestion != null) safeQuestion = safeQuestion.trim();
+                if (safeQuestion != null && safeQuestion.length() > 500) {
+                    safeQuestion = safeQuestion.substring(0, 500);
+                }
+                showCustomAltDialog(safeQuestion, endingAlt.getId());
             });
         } else {
             btnAltEnding.setEnabled(false);
@@ -145,15 +153,18 @@ public class EndingActivity extends BaseActivity {
         Button buttonYes = dialogView.findViewById(R.id.buttonAltYes);
         Button buttonNo = dialogView.findViewById(R.id.buttonAltNo);
 
-        if (question != null && !question.isEmpty()) {
-            textQuestion.setText(question);
-        } else {
-            textQuestion.setText("Вы действительно хотите выбрать альтернативную концовку?");
+        String safeText = (question != null && !question.trim().isEmpty())
+                ? question.trim() : "Вы действительно хотите выбрать альтернативную концовку?";
+        if (safeText.length() > 200) {
+            safeText = safeText.substring(0, 200) + "...";
         }
+        textQuestion.setText(safeText);
 
+        String finalSafeText = safeText;
         buttonYes.setOnClickListener(v -> {
             dialog.dismiss();
-            openEndingSelection(endingId, question);
+            Log.d("EndingDebug", "Подтверждена альт. концовка ID=" + endingId + ", вопрос=" + finalSafeText);
+            openEndingSelection(endingId, finalSafeText);
         });
 
         buttonNo.setOnClickListener(v -> dialog.dismiss());
@@ -165,9 +176,12 @@ public class EndingActivity extends BaseActivity {
         Intent intent = new Intent(this, EndingSelectionActivity.class);
         intent.putExtra("scenarioId", scenarioId);
         intent.putExtra("endingId", endingId);
-        if (altQuestion != null && !altQuestion.isEmpty()) {
-            intent.putExtra("altQuestion", altQuestion);
+        if (altQuestion != null && !altQuestion.trim().isEmpty()) {
+            String trimmed = altQuestion.trim();
+            if (trimmed.length() > 500) trimmed = trimmed.substring(0, 500);
+            intent.putExtra("altQuestion", trimmed);
         }
+        Log.d("EndingDebug", "Переход к EndingSelectionActivity: id=" + endingId + ", alt=" + altQuestion);
         startActivity(intent);
     }
 }

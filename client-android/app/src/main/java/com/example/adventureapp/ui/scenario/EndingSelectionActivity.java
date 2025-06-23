@@ -2,6 +2,7 @@ package com.example.adventureapp.ui.scenario;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,14 +71,23 @@ public class EndingSelectionActivity extends BaseActivity {
                         if (e.getId() == endingId) {
                             String displayTitle = e.getTitleEnding();
                             if ("Альтернативная концовка".equalsIgnoreCase(displayTitle)
-                                    && altQuestion != null && !altQuestion.isEmpty()) {
-                                displayTitle = altQuestion;
+                                    && altQuestion != null && !altQuestion.trim().isEmpty()) {
+                                displayTitle = altQuestion.trim();
+                                if (displayTitle.length() > 200) {
+                                    displayTitle = displayTitle.substring(0, 200) + "...";
+                                }
                                 titleTextView.setTextColor(getResources().getColor(R.color.light_red));
                             }
 
+                            Log.d("EndingDebug", "Концовка найдена: ID=" + endingId + ", Заголовок=" + displayTitle);
+
                             titleTextView.setText(displayTitle);
+
+                            String rawDescr = e.getEndDescr();
+                            if (rawDescr == null) rawDescr = "";
+                            String formattedDescr = rawDescr.replace("<br><br>", "\n\n");
                             descriptionTextView.setAlpha(0f);
-                            descriptionTextView.setText(e.getEndDescr());
+                            descriptionTextView.setText(formattedDescr);
                             descriptionTextView.animate()
                                     .alpha(1f)
                                     .setDuration(1200)

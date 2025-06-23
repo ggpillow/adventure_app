@@ -14,14 +14,16 @@
         android:src="@drawable/main_background"
         android:importantForAccessibility="no" />
 
-    <!-- Анимируемый текст через TextSwitcher -->
-    <TextSwitcher
-        android:id="@+id/splashTextSwitcher"
+    <!-- Простой TextView с кастомным шрифтом и центровкой -->
+    <TextView
+        android:id="@+id/splashText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:padding="16dp"
         android:gravity="center"
-        android:inAnimation="@android:anim/fade_in"
-        android:outAnimation="@android:anim/fade_out" />
+        android:padding="16dp"
+        android:text="ЗАГРУЗКА"
+        android:textColor="@android:color/white"
+        android:textSize="45sp"
+        android:fontFamily="@font/panton_rust_heavy_grsh" />
 </RelativeLayout>

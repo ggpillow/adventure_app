@@ -36,17 +36,16 @@ public class ParagraphDisplayActivity extends BaseActivity {
         buttonBack = findViewById(R.id.buttonBack);
         buttonMemo = findViewById(R.id.buttonMemo);
 
-        // Назначение ID кнопки "Назад" для BaseActivity
         backButtonId = R.id.buttonBack;
 
-        // Получаем данные из Intent
         Intent intent = getIntent();
         String paragraphText = intent.getStringExtra("paragraphText");
         long effectId = intent.getLongExtra("effectId", -1);
         scenarioId = intent.getLongExtra("scenarioId", -1);
 
         if (paragraphText != null) {
-            paragraphTextView.setText(paragraphText);
+            String formattedParagraph = paragraphText.replace("<br><br>", "\n\n");
+            paragraphTextView.setText(formattedParagraph);
         }
 
         if (effectId != -1) {
@@ -56,7 +55,6 @@ public class ParagraphDisplayActivity extends BaseActivity {
             effectTextView.setTextColor(ContextCompat.getColor(this, R.color.gray));
         }
 
-        // Повторная загрузка абзаца по номеру
         buttonOk.setOnClickListener(v -> {
             if (isLoading) return;
 
@@ -90,10 +88,11 @@ public class ParagraphDisplayActivity extends BaseActivity {
                     @Override
                     public void onResponse(Call<com.example.adventureapp.data.model.Paragraph> call, Response<com.example.adventureapp.data.model.Paragraph> response) {
                         isLoading = false;
-
                         if (response.isSuccessful() && response.body() != null) {
                             com.example.adventureapp.data.model.Paragraph paragraph = response.body();
-                            paragraphTextView.setText(paragraph.getParagraphDescr());
+                            String formattedText = paragraph.getParagraphDescr().replace("<br><br>", "\n\n");
+                            paragraphTextView.setText(formattedText);
+
                             Long effectId = paragraph.getEffectId();
                             if (effectId != null) {
                                 loadEffect(effectId);
@@ -122,7 +121,10 @@ public class ParagraphDisplayActivity extends BaseActivity {
                     public void onResponse(Call<Effect> call, Response<Effect> response) {
                         if (response.isSuccessful() && response.body() != null) {
                             Effect effect = response.body();
-                            effectTextView.setText(effect.getDescription());
+
+                            String rawDescription = effect.getDescription();
+                            String formattedDescription = rawDescription.replace("<br><br>", "\n\n");
+                            effectTextView.setText(formattedDescription);
 
                             int color;
                             switch (effect.getEffectType()) {

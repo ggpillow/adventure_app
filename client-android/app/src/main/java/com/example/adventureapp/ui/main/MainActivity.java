@@ -25,7 +25,7 @@ public class MainActivity extends BaseActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        MusicManager.start(this); // Воспроизводим музыку, если включена в настройках
+        //MusicManager.start(this); // Воспроизводим музыку, если включена в настройках
 
         setupListeners();
     }

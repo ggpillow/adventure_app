@@ -13,11 +13,11 @@ public class KolymaAdventureApplication {
 		SpringApplication.run(KolymaAdventureApplication.class, args);
 	}
 
-	@Bean
-	public CommandLineRunner repairDatabase(Flyway flyway) {
-		return args -> {
-			flyway.repair(); // обновит checksum в flyway_schema_history
-		};
-	}
+	//@Bean
+	//public CommandLineRunner repairDatabase(Flyway flyway) {
+		//return args -> {
+			//flyway.repair(); // обновит checksum в flyway_schema_history
+		//};
+	//}
 
 }
